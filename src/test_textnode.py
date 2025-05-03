@@ -25,7 +25,7 @@ class TestTextNode(unittest.TestCase):
         self.assertNotEqual(node, node2)
 
     def test_url_not_none(self):
-        node = TextNode("This is a text node", TextType.BOLD, TextType.URL)
+        node = TextNode("This is a text node", TextType.BOLD, TextType.LINK)
         node2 = TextNode("This is a text node", TextType.BOLD, None)
         self.assertNotEqual(node, node2)
 
