@@ -1,3 +1,4 @@
+from textnode import TextType, TextNode
 
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
@@ -14,7 +15,7 @@ class HTMLNode():
     def props_to_html(self):
         ret_str = ""
         for key in self.props:
-            ret_str += " " + key + "=" + '"' + self.props[key] + '"'
+            ret_str += f' {key}="{self.props[key]}"'
         self.props = ret_str
         return self.props
 
@@ -31,10 +32,10 @@ class LeafNode(HTMLNode):
         if self.tag == None:
             return self.value
         if self.props != None:
-            self.props_to_html()
+            self.props = f'{self.props_to_html()}'
         elif self.props == None:
             self.props = ""
-        return "<" + self.tag + self.props + ">" + self.value + "</" + self.tag + ">"
+        return f"<{self.tag}{self.props}>{self.value}</{self.tag}>"
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
@@ -45,15 +46,19 @@ class ParentNode(HTMLNode):
             raise ValueError("Must have tag")
         if self.children is None:
             raise ValueError("Must have children")
+        if type(self.tag) is not str:
+            raise ValueError("Type of tag is not appropriate")
+
+        child = ""
+        for n in range(0, len(self.children)):
+            child += self.children[n].to_html()
+
+        return f"<{self.tag}>{child}</{self.tag}>"
 
 
-        current_string = ""
-        if len(self.children) < 1:
-            return current_string
-        n = 0
-        current_string += self.children[n].to_html()
-        self.to_html()
-        return current_string
+def text_node_to_html_node(text_node):
+    if [text_node][1] is TextType.TEXT:
+        return LeafNode(None, [text_node][0])
 
 
 
