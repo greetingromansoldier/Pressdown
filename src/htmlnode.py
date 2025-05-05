@@ -56,9 +56,6 @@ class ParentNode(HTMLNode):
         return f"<{self.tag}>{child}</{self.tag}>"
 
 
-def text_node_to_html_node(text_node):
-    if [text_node][1] is TextType.TEXT:
-        return LeafNode(None, [text_node][0])
 
 
 
