@@ -29,5 +29,11 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", TextType.BOLD, None)
         self.assertNotEqual(node, node2)
 
+    # def test_non_exist_type(self):
+    #     node = TextNode("This is a text node", TextType.BOLD, TextType.LINK)
+    #     with self.assertRaises(ValueError):
+    #         parent_node.to_html()
+
+
 if __name__ == "__main__":
     unittest.main()
