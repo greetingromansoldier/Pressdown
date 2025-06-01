@@ -25,3 +25,53 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
     return re.findall(r"(?<!!)\[(.*?)\]\((.*?)\)", text)
 
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        text_yet = node.text
+
+        while len(extract_markdown_images(text_yet)) > 0:
+            image_alt = extract_markdown_images(text_yet)[0][0]
+            image_link = extract_markdown_images(text_yet)[0][1]
+
+            sections = text_yet.split(f"![{image_alt}]({image_link})", 1)
+            before_image, after_image = sections[0], sections[1]
+
+            if len(before_image) > 0:
+                before_text = TextNode(before_image, TextType.TEXT)
+                new_nodes.append(before_text)
+
+            image_node = TextNode(image_alt, TextType.IMAGE, image_link)
+            new_nodes.append(image_node)
+            text_yet = after_image
+
+        if len(text_yet) > 0 and text_yet != "":
+            new_nodes.append(TextNode(text_yet, TextType.TEXT))
+
+    return new_nodes
+
+
+def split_nodes_link(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        text_yet = node.text
+
+        while len(extract_markdown_links(text_yet)) > 0:
+            link_alt = extract_markdown_links(text_yet)[0][0]
+            link_link = extract_markdown_links(text_yet)[0][1]
+
+            sections = text_yet.split(f"[{link_alt}]({link_link})", 1)
+            before_link, after_link = sections[0], sections[1]
+
+            if len(before_link) > 0:
+                before_text = TextNode(before_link, TextType.TEXT)
+                new_nodes.append(before_text)
+
+            image_node = TextNode(link_alt, TextType.LINK, link_link)
+            new_nodes.append(image_node)
+            text_yet = after_link
+
+        if len(text_yet) > 0 and text_yet != "":
+            new_nodes.append(TextNode(text_yet, TextType.TEXT))
+
+    return new_nodes
