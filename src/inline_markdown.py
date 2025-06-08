@@ -6,12 +6,15 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
+            continue
 
         new_node = node.text.split(delimiter)
         if (len(new_node) % 2) == 0 and len(new_node) > 1:
             raise Exception("Probably invalid markdown syntax, check for second delimiter")
         else:
             for i in range(0, len(new_node)):
+                if new_node[i] == "":
+                    continue
                 if (i % 2) == 0:
                     new_nodes.append(TextNode(new_node[i], TextType.TEXT))
                 if (i % 2) != 0:
@@ -28,6 +31,9 @@ def extract_markdown_links(text):
 def split_nodes_image(old_nodes):
     new_nodes = []
     for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
         text_yet = node.text
 
         while len(extract_markdown_images(text_yet)) > 0:
@@ -54,6 +60,9 @@ def split_nodes_image(old_nodes):
 def split_nodes_link(old_nodes):
     new_nodes = []
     for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
         text_yet = node.text
 
         while len(extract_markdown_links(text_yet)) > 0:
@@ -75,3 +84,16 @@ def split_nodes_link(old_nodes):
             new_nodes.append(TextNode(text_yet, TextType.TEXT))
 
     return new_nodes
+
+def text_to_textnodes(text):
+    node = TextNode(text, TextType.TEXT)
+    new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC)
+    new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+    new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
+    new_nodes = split_nodes_image(new_nodes)
+    new_nodes = split_nodes_link(new_nodes)
+    return new_nodes
+
+
+
+
