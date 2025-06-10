@@ -25,25 +25,35 @@ def block_to_block_type(block):
         head_count = 1
         for n in range(1, 8):
             if head_count > 6:
-                return BlockType.PARAGRAPH
+                continue
             if block[n] == "#":
                 head_count += 1
             elif block[n] == " ":
                 return BlockType.HEADING
             else:
-                return BlockType.PARAGRAPH
-
-        return BlockType.PARAGRAPH
-    
-    print(block.strip().split("\n"))
-    if block.strip().split("\n")[0] == "```" and block.strip().split("\n")[-1] == "```":
+                continue
+    elif block.strip().split("\n")[0] == "```" and block.strip().split("\n")[-1] == "```":
         return BlockType.CODE
+    elif block.strip().split("\n")[0][0] == ">":
+        line_num = len(block.strip().split("\n"))
+        print(f"line_num: {line_num}")
+        quote_line_num = 0
+        for n in block.strip().split("\n"):
+            if n[0] == ">":
+                quote_line_num += 1
+        if quote_line_num == line_num:
+            return BlockType.QUOTE
+        else:
+            return BlockType.PARAGRAPH
+    elif block.strip().split("\n")[0][:2] == "- ":
+        return BlockType.UNORDERED_LIST
+
     else:
-        return None
+        return BlockType.PARAGRAPH
 
 md = """
-```
-helloworld
-```
+- hello
+>> hello world
+ hellooooo world
 """
 print(block_to_block_type(md))
