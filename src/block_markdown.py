@@ -36,24 +36,47 @@ def block_to_block_type(block):
         return BlockType.CODE
     elif block.strip().split("\n")[0][0] == ">":
         line_num = len(block.strip().split("\n"))
-        print(f"line_num: {line_num}")
         quote_line_num = 0
         for n in block.strip().split("\n"):
             if n[0] == ">":
                 quote_line_num += 1
         if quote_line_num == line_num:
             return BlockType.QUOTE
-        else:
-            return BlockType.PARAGRAPH
+        raise Exception("Markdown Quote Block is not properly formatted")
     elif block.strip().split("\n")[0][:2] == "- ":
-        return BlockType.UNORDERED_LIST
+        line_num = 0
+        list_line_num = 0
+        for n in block.strip().split("\n"):
+            line_num += 1
+            if n[:2] == "- ":
+                list_line_num += 1
+        if line_num == list_line_num:
+            return BlockType.UNORDERED_LIST
+        raise Exception("Unordered Markdown List is not properly formatted")
+    elif block.strip().split("\n")[0][:2] == "1.":
+        line_num = 0
+        list_line_num = 0
+        for n in block.strip().split("\n"):
+            line_num += 1
+            print(f"n[:2]: {n[:2]}\line_num: {line_num}")
+            if (
+                # I wanted add some other check here but don't remember 
+                # what in particular
 
+                # YEP THIS: check if number line de facto is the same as
+                # number which expected in list order
+                n[:2] == f"{line_num}."
+            ):
+                list_line_num += 1
+            raise Exception("Ordered Markdown List is not properly formatted")
+        if line_num == list_line_num:
+            return BlockType.ORDERED_LIST
     else:
         return BlockType.PARAGRAPH
 
 md = """
-- hello
->> hello world
- hellooooo world
+1. sdfsdf
+2. sdfsdf
+3. sdfsdf
 """
 print(block_to_block_type(md))
