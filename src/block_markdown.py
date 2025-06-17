@@ -18,7 +18,6 @@ def markdown_to_blocks(markdown):
         new_blocks.append(new_block)
     return new_blocks
 
-# takes block of markdown text, returns BlockType which represents type of block it is
 def block_to_block_type(block):
 
     if block[0] == "#":
@@ -53,26 +52,45 @@ def block_to_block_type(block):
         if line_num == list_line_num:
             return BlockType.UNORDERED_LIST
         raise Exception("Unordered Markdown List is not properly formatted")
+
     elif block.strip().split("\n")[0][:2] == "1.":
         line_num = 0
         list_line_num = 0
+
         for n in block.strip().split("\n"):
             line_num += 1
-            print(f"n[:2]: {n[:2]}\line_num: {line_num}")
             if (
-                # I wanted add some other check here but don't remember 
-                # what in particular
-
-                # YEP THIS: check if number line de facto is the same as
-                # number which expected in list order
                 n[:2] == f"{line_num}."
+                and n[2] == " "
+                
             ):
                 list_line_num += 1
-            raise Exception("Ordered Markdown List is not properly formatted")
+
         if line_num == list_line_num:
             return BlockType.ORDERED_LIST
+        elif line_num != list_line_num:
+            raise Exception("Ordered Markdown List is not properly formatted")
+
     else:
         return BlockType.PARAGRAPH
+
+# === Known Issues === (at this point good decision should be write unit tests)
+# heading detection: some issue with spaces and counting hash symbols
+# -
+# do quote block (">") needs space after each ">" at each line?
+# -
+# overall structure: do I need raise Exceptions for malformed blocks
+# or do I need return just paragraph?
+# - 
+# code block detection: we check for ``` at the start and at the end, but we probably 
+# need raise exception if code block is not closed 
+# -
+# ordered list logic: I have logic for checking the each next line number
+# but we don't specify what the *first* number must be - like what if first line
+# in your list is 4?
+# -
+# edge cases: empty string, or string doesn't match any of conditions *perfectly*
+
 
 md = """
 1. sdfsdf
