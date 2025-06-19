@@ -74,7 +74,7 @@ def block_to_block_type(block):
     else:
         return BlockType.PARAGRAPH
 
-# === Known Issues === (at this point good decision should be write unit tests)
+# === Known Issues === (at this point good decision would be writing unit tests)
 # heading detection: some issue with spaces and counting hash symbols
 # -
 # do quote block (">") needs space after each ">" at each line?
