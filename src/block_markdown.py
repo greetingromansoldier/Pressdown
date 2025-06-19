@@ -23,12 +23,12 @@ def block_to_block_type(block):
     if block[0] == "#":
         head_count = 1
         for n in range(1, 8):
-            if head_count > 6:
-                continue
             if block[n] == "#":
                 head_count += 1
             elif block[n] == " ":
                 return BlockType.HEADING
+            elif head_count > 6:
+                return BlockType.PARAGRAPH
             else:
                 continue
     elif block.strip().split("\n")[0] == "```" and block.strip().split("\n")[-1] == "```":
