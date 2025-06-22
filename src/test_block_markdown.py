@@ -64,7 +64,7 @@ And another
         # 2. Even when between # and text no space, program sees it as
         # heading, but it must be paragraph
         md_text = """
-#Heading 1
+# Heading 1
 
 ## Heading 2
 
@@ -75,6 +75,7 @@ And another
 ##### Heading 5
 
 ###### Heading 6
+
 """
         blocks = markdown_to_blocks(md_text)
         for block in blocks:
@@ -84,35 +85,67 @@ And another
                 BlockType.HEADING
             )
 
-# md_text = """
-# paragraph here
-#
-# #looks like heading but this is paragraph
-#
-# # heading 1
-#
-# ##### heading 5
-#
-# ```code must be here```
-#
-# > some
-# > quotes
-# > here
-#
-# - just
-# - unordered
-# - list
-#
-# 1. Just an ordered list here
-# 2. another text
-# """
-# blocks = markdown_to_blocks(md_text)
-# print(f"md_text: {md_text}")
-# print(f"block: {blocks}")
-# print("="*50)
-# for block in blocks:
-#     block_type = block_to_block_type(block)
-#     print(f"current block:\n{block}")
-#     print(f"block_type:\n{block_type}")
-#     print(f"-"*50)
-#
+
+    def test_block_type_code(self):
+        md_text = """
+```
+Block in code quotes
+```
+
+```and another code text```
+"""
+        blocks = markdown_to_blocks(md_text)
+        for block in blocks:
+            block_type = block_to_block_type(block)
+            self.assertEqual(
+                block_type,
+                BlockType.CODE
+            )
+
+
+    def test_block_type_quote(self):
+        md_text = """
+>quote may be without space
+> or with space
+> > or even two quotes
+> but quote must be the first symbol
+"""
+        blocks = markdown_to_blocks(md_text)
+        for block in blocks:
+            block_type = block_to_block_type(block)
+            self.assertEqual(
+                block_type,
+                BlockType.QUOTE
+            )
+
+
+
+    def test_block_type_unordered_list(self):
+        md_text = """
+- just
+* unordered
+- list
+"""
+        blocks = markdown_to_blocks(md_text)
+        for block in blocks:
+            block_type = block_to_block_type(block)
+            self.assertEqual(
+                block_type,
+                BlockType.UNORDERED_LIST
+            )
+
+
+
+    def test_block_type_ordered_list(self):
+        md_text = """
+1. just
+2. ordered
+3. list
+"""
+        blocks = markdown_to_blocks(md_text)
+        for block in blocks:
+            block_type = block_to_block_type(block)
+            self.assertEqual(
+                block_type,
+                BlockType.ORDERED_LIST
+            )

@@ -27,11 +27,13 @@ def block_to_block_type(block):
                 head_count += 1
             elif block[n] == " ":
                 return BlockType.HEADING
-            elif head_count > 6:
+            elif block[n] != " " and block[n] != "#":
+                return BlockType.PARAGRAPH
+            if head_count > 6:
                 return BlockType.PARAGRAPH
             else:
                 continue
-    elif block.strip().split("\n")[0] == "```" and block.strip().split("\n")[-1] == "```":
+    elif block.strip().split("```")[0] == "" and block.strip().split("```")[-1] == "":
         return BlockType.CODE
     elif block.strip().split("\n")[0][0] == ">":
         line_num = len(block.strip().split("\n"))
@@ -42,12 +44,18 @@ def block_to_block_type(block):
         if quote_line_num == line_num:
             return BlockType.QUOTE
         raise Exception("Markdown Quote Block is not properly formatted")
-    elif block.strip().split("\n")[0][:2] == "- ":
+    elif (
+          block.strip().split("\n")[0][:2] == "- "
+          or block.strip().split("\n")[0][:2] == "* "
+          ):
         line_num = 0
         list_line_num = 0
         for n in block.strip().split("\n"):
             line_num += 1
-            if n[:2] == "- ":
+            if (
+                n[:2] == "- "
+                or n[:2] == "* "
+            ):
                 list_line_num += 1
         if line_num == list_line_num:
             return BlockType.UNORDERED_LIST
@@ -62,7 +70,6 @@ def block_to_block_type(block):
             if (
                 n[:2] == f"{line_num}."
                 and n[2] == " "
-                
             ):
                 list_line_num += 1
 
@@ -74,27 +81,3 @@ def block_to_block_type(block):
     else:
         return BlockType.PARAGRAPH
 
-# === Known Issues === (at this point good decision would be writing unit tests)
-# heading detection: some issue with spaces and counting hash symbols
-# -
-# do quote block (">") needs space after each ">" at each line?
-# -
-# overall structure: do I need raise Exceptions for malformed blocks
-# or do I need return just paragraph?
-# - 
-# code block detection: we check for ``` at the start and at the end, but we probably 
-# need raise exception if code block is not closed 
-# -
-# ordered list logic: I have logic for checking the each next line number
-# but we don't specify what the *first* number must be - like what if first line
-# in your list is 4?
-# -
-# edge cases: empty string, or string doesn't match any of conditions *perfectly*
-
-
-md = """
-1. sdfsdf
-2. sdfsdf
-3. sdfsdf
-"""
-print(block_to_block_type(md))
