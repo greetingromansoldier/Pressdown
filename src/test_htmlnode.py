@@ -137,7 +137,7 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(html_node.to_html(), 
                          '<a href="some link here">This is a link text node</a>')
 
-    def test_text_type_is_link(self):
+    def test_text_type_is_image(self):
         node = TextNode("This is a link text node", TextType.IMAGE)
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "img")
@@ -146,9 +146,6 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(html_node.to_html(), 
                          '<img src="source" alt="alt text"></img>')
 
-    # def test_text_type_is_wrong(self):
-    #     with self.assertRaises(ValueError):
-    #         node = TextNode("This is some text", TextType.unknown)
 if __name__ == "__main__":
     unittest.main()
 
