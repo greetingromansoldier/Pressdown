@@ -36,6 +36,9 @@ def markdown_to_html_node(markdown):
             print("*"*50)
         if block_to_block_type(block) == BlockType.UNORDERED_LIST:
             print(f"'{block}'\nis unordered list")
+            print(f"unordered list transformed to html:\n"
+                  +f"{markdown_unordered_list_to_html_node(block)}"
+                  )
             print("*"*50)
         if block_to_block_type(block) == BlockType.ORDERED_LIST:
             print(f"'{block}'\nis ordered list")
@@ -72,6 +75,25 @@ def markdown_heading_to_html_node(block):
     node = LeafNode(tag=f'h{heading_value}', value=block_value, props=None)
     return node.to_html()
 
+def markdown_unordered_list_to_html_node(block):
+    # we must get child_nodes from function text_to_children
+    # here's just the mock for testing
+    child_nodes = text_to_children(block)
+    parent_node = ParentNode(tag="ul", children=child_nodes,)
+    return parent_node.to_html()
+
+def text_to_children(text):
+    # currently works only for unordered list
+    # and also not recursive
+    # and logic is stupic for now
+    children = []
+    text = text.split("\n")
+    for obj in text:
+        child = LeafNode(tag="li", value=obj)
+        children.append(child)
+    return children
+
+
 
 md = """
 Hello
@@ -85,6 +107,10 @@ Hello
 
 And here's the much much better block
 with **bolded** text
+
+- unordered list 1
+- unordered list 2
+- unordered list 3
 """
 
 markdown_to_html_node(md)
