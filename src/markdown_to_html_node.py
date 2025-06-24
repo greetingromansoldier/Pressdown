@@ -1,12 +1,15 @@
+from text_node_to_html_node import text_node_to_html_node
 from textnode import (
     TextType,
     TextNode,
-    text_node_to_html_node
 )
 from htmlnode import (
     HTMLNode,
     LeafNode,
     ParentNode
+)
+from inline_markdown import (
+    text_to_textnodes,
 )
 from block_markdown import (
     BlockType,
@@ -51,7 +54,6 @@ def markdown_paragraph_to_html_node(block):
     return html_text # making it text only for the test representation
 
 def markdown_heading_to_html_node(block):
-    # find a way to count # in markdown headings and turn into h1-h6 for html
     heading_value = 0
     block_value = ""
     if block.startswith("# "):
@@ -76,22 +78,34 @@ def markdown_heading_to_html_node(block):
     return node.to_html()
 
 def markdown_unordered_list_to_html_node(block):
-    # we must get child_nodes from function text_to_children
-    # here's just the mock for testing
-    child_nodes = text_to_children(block)
+    
+    def extract_text(md_block):
+        new_text = ""
+        for line in block.split("\n"):
+            new_text += line[2:] + "\n"
+        return new_text.rstrip("\n")
+
+    child_nodes = text_to_children(extract_text(block))
+
+    # for child in child_nodes:
+    #     if child.TextType == 
+
     parent_node = ParentNode(tag="ul", children=child_nodes,)
     return parent_node.to_html()
 
 def text_to_children(text):
-    # currently works only for unordered list
-    # and also not recursive
-    # and logic is stupic for now
-    children = []
-    text = text.split("\n")
-    for obj in text:
-        child = LeafNode(tag="li", value=obj)
-        children.append(child)
-    return children
+    child_nodes = []
+    for node in text_to_textnodes(text):
+        print(f"node:{node}")
+        child_nodes.append(text_node_to_html_node(node))
+    return child_nodes
+
+    # children = []
+    # text = text.split("\n")
+    # for obj in text:
+    #     child = LeafNode(tag="li", value=obj)
+    #     children.append(child)
+    # return children
 
 
 
@@ -111,6 +125,7 @@ with **bolded** text
 - unordered list 1
 - unordered list 2
 - unordered list 3
+- unordered list with _italic text_ 4
 """
 
 markdown_to_html_node(md)
