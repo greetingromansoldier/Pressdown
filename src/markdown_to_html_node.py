@@ -19,7 +19,7 @@ from block_markdown import (
 import textnode
 
 # for now I not only do code for nodes but also use node.to_html()
-# for representing results to myself and checking if it works like it supposed to
+# for representing results and checking if it works as intended
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
     for block in blocks:
@@ -46,6 +46,9 @@ def markdown_to_html_node(markdown):
             print("*"*50)
         if block_to_block_type(block) == BlockType.ORDERED_LIST:
             print(f"'{block}'\nis ordered list")
+            print(f"unordered list transformed to html:\n"
+                  +f"{markdown_ordered_list_to_html_node(block)}"
+                  )
             print("*"*50)
     return blocks
     
@@ -61,12 +64,6 @@ def markdown_paragraph_to_html_node(block):
         print(f"node in textnodes:{node}")
     print(f"func md paragraph to html node, html_nodes:\n{html_nodes}")
     print(parent.to_html())
-        
-    # html_node = text_node_to_html_node(text_nodes)
-    # print(f"func md paragraph to html node, html_node:\n{html_node}")
-    # html_node = LeafNode(tag="p", value=block, props=None)
-    # html_text = html_node.to_html()
-    # return html_text # making it text only for the test representation
 
 def markdown_heading_to_html_node(block):
     heading_value = 0
@@ -93,27 +90,46 @@ def markdown_heading_to_html_node(block):
     return node.to_html()
 
 def markdown_unordered_list_to_html_node(block):
+    children = block_to_children(block)
+    unordered_list_parent = ParentNode(tag="ul", children=children)
+    return unordered_list_parent.to_html()
 
-    parent_list_elems = []
-    list_elem_inline = []
-
-    parent_list = ParentNode(tag="ul", children=parent_list_elems)
-    return block_to_children(block)
+def markdown_ordered_list_to_html_node(block):
+    children = block_to_children(block)
+    unordered_list_parent = ParentNode(tag="ol", children=children)
+    return unordered_list_parent.to_html()
 
 def block_to_children(block):
     if block_to_block_type(block) == BlockType.UNORDERED_LIST:
         block_values = []
+        list_elem_nodes = []
+        for inline in block.split("1. "):
+            if inline != "":
+                block_values.append(inline.strip("\n"))
+        for value in block_values:
+            text_nodes = text_to_textnodes(value)
+            html_nodes = []
+            for node in text_nodes:
+                html_nodes.append(text_node_to_html_node(node))
+            parent = ParentNode(tag="li", children=html_nodes)
+            list_elem_nodes.append(parent)
+        return list_elem_nodes
+    elif block_to_block_type(block) == BlockType.ORDERED_LIST:
+        block_values = []
+        list_elem_nodes = []
         for inline in block.split("- "):
             if inline != "":
                 block_values.append(inline.strip("\n"))
-        return block_values
+        for value in block_values:
+            text_nodes = text_to_textnodes(value)
+            html_nodes = []
+            for node in text_nodes:
+                html_nodes.append(text_node_to_html_node(node))
+            parent = ParentNode(tag="li", children=html_nodes)
+            list_elem_nodes.append(parent)
+        return list_elem_nodes
 
-    # children = []
-    # text = text.split("\n")
-    # for obj in text:
-    #     child = LeafNode(tag="li", value=obj)
-    #     children.append(child)
-    # return children
+
 
 
 
@@ -137,6 +153,12 @@ with **bolded** text
 - unordered list 2
 - unordered list 3
 - unordered list with _italic text_ 4
+
+1. and this
+2. is
+3. some
+4. ordered list
+5. with **some bold** and _some italic_ text
 """
 
 markdown_to_html_node(md)
