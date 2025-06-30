@@ -16,6 +16,7 @@ from block_markdown import (
     markdown_to_blocks, 
     block_to_block_type
 )
+import textnode
 
 # for now I not only do code for nodes but also use node.to_html()
 # for representing results to myself and checking if it works like it supposed to
@@ -49,9 +50,23 @@ def markdown_to_html_node(markdown):
     return blocks
     
 def markdown_paragraph_to_html_node(block):
-    node = LeafNode(tag="p", value=block, props=None)
-    html_text = node.to_html()
-    return html_text # making it text only for the test representation
+    print("="*50)
+    print(f"func md paragraph to html node, block:\n{block}")
+    text_nodes = text_to_textnodes(block)
+    html_nodes = []
+    parent = ParentNode(tag="p", children=html_nodes)
+    print(f"func md paragraph to html node, text_node:\n{text_nodes}")
+    for node in text_nodes:
+        html_nodes.append(text_node_to_html_node(node))
+        print(f"node in textnodes:{node}")
+    print(f"func md paragraph to html node, html_nodes:\n{html_nodes}")
+    print(parent.to_html())
+        
+    # html_node = text_node_to_html_node(text_nodes)
+    # print(f"func md paragraph to html node, html_node:\n{html_node}")
+    # html_node = LeafNode(tag="p", value=block, props=None)
+    # html_text = html_node.to_html()
+    # return html_text # making it text only for the test representation
 
 def markdown_heading_to_html_node(block):
     heading_value = 0
@@ -78,27 +93,20 @@ def markdown_heading_to_html_node(block):
     return node.to_html()
 
 def markdown_unordered_list_to_html_node(block):
-    
-    def extract_text(md_block):
-        new_text = ""
-        for line in block.split("\n"):
-            new_text += line[2:] + "\n"
-        return new_text.rstrip("\n")
 
-    child_nodes = text_to_children(extract_text(block))
+    parent_list_elems = []
+    list_elem_inline = []
 
-    # for child in child_nodes:
-    #     if child.TextType == 
+    parent_list = ParentNode(tag="ul", children=parent_list_elems)
+    return block_to_children(block)
 
-    parent_node = ParentNode(tag="ul", children=child_nodes,)
-    return parent_node.to_html()
-
-def text_to_children(text):
-    child_nodes = []
-    for node in text_to_textnodes(text):
-        print(f"node:{node}")
-        child_nodes.append(text_node_to_html_node(node))
-    return child_nodes
+def block_to_children(block):
+    if block_to_block_type(block) == BlockType.UNORDERED_LIST:
+        block_values = []
+        for inline in block.split("- "):
+            if inline != "":
+                block_values.append(inline.strip("\n"))
+        return block_values
 
     # children = []
     # text = text.split("\n")
@@ -110,11 +118,14 @@ def text_to_children(text):
 
 
 md = """
-Hello
+Hello my little friend. I want some _italic_ text here. This would be awesome. 
+That's a good thing to add **bold text** also, and of course some [image](http://link to an image)
 
 # Heading
 
 ## Heading 2
+
+####### Heading ???
 
 >THis is block with *italic* text
 >And just another text in one block
