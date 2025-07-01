@@ -34,6 +34,9 @@ def markdown_to_html_node(markdown):
             print("*"*50)
         if block_to_block_type(block) == BlockType.CODE:
             print(f"'{block}'\nis code")
+            print(f"code block transformed to html:\n"
+                  +f"|{markdown_code_block_to_html_node(block)}|"
+                  )
             print("*"*50)
         if block_to_block_type(block) == BlockType.QUOTE:
             print(f"'{block}'\nis quote")
@@ -83,6 +86,19 @@ def markdown_heading_to_html_node(block):
         block_value = block.strip().split("######")[1].strip()
     node = LeafNode(tag=f'h{heading_value}', value=block_value, props=None)
     return node.to_html()
+
+def markdown_code_block_to_html_node(block):
+    text_value = ""
+    for value in block.split("```"):
+        if value != "":
+            text_value += value.strip("\n")
+    text_node = TextNode(text=text_value, text_type=TextType.CODE)
+    internal_html = text_node_to_html_node(text_node)
+    parent_node = ParentNode(tag="pre", children=[internal_html])
+    return parent_node.to_html()
+
+    # quote_block_parent = ParentNode(tag="pre", children=children)
+    # return quote_block_parent.to_html()
 
 def markdown_quote_block_to_html_node(block):
     children = block_to_children(block)
@@ -185,6 +201,10 @@ with **bolded** text
 > is
 > block
 > quote
+
+```
+and finally we are **doing** codeblock
+```
 """
 
 markdown_to_html_node(md)
