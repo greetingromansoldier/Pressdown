@@ -103,7 +103,7 @@ def block_to_children(block):
     if block_to_block_type(block) == BlockType.UNORDERED_LIST:
         block_values = []
         list_elem_nodes = []
-        for inline in block.split("1. "):
+        for inline in block.split("- "):
             if inline != "":
                 block_values.append(inline.strip("\n"))
         for value in block_values:
@@ -117,9 +117,9 @@ def block_to_children(block):
     elif block_to_block_type(block) == BlockType.ORDERED_LIST:
         block_values = []
         list_elem_nodes = []
-        for inline in block.split("- "):
+        for inline in block.split("\n"):
             if inline != "":
-                block_values.append(inline.strip("\n"))
+                block_values.append(inline[3:].strip("\n"))
         for value in block_values:
             text_nodes = text_to_textnodes(value)
             html_nodes = []
@@ -158,7 +158,7 @@ with **bolded** text
 2. is
 3. some
 4. ordered list
-5. with **some bold** and _some italic_ text
+5. with **some bold** and **some italic** text
 """
 
 markdown_to_html_node(md)
