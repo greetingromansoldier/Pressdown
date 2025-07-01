@@ -56,19 +56,9 @@ def markdown_to_html_node(markdown):
     return blocks
     
 def markdown_paragraph_to_html_node(block):
-    # some of logic in this func should be refactored and
-    # transfered to md block to child func
-    print("="*50)
-    print(f"func md paragraph to html node, block:\n{block}")
-    text_nodes = text_to_textnodes(block)
-    html_nodes = []
-    parent = ParentNode(tag="p", children=html_nodes)
-    print(f"func md paragraph to html node, text_node:\n{text_nodes}")
-    for node in text_nodes:
-        html_nodes.append(text_node_to_html_node(node))
-        print(f"node in textnodes:{node}")
-    print(f"func md paragraph to html node, html_nodes:\n{html_nodes}")
-    print(parent.to_html())
+    children = block_to_children(block)
+    parent = ParentNode(tag="p", children=children)
+    return parent.to_html()
 
 def markdown_heading_to_html_node(block):
     heading_value = 0
@@ -110,7 +100,14 @@ def markdown_ordered_list_to_html_node(block):
     return unordered_list_parent.to_html()
 
 def block_to_children(block):
-    if block_to_block_type(block) == BlockType.QUOTE:
+    if block_to_block_type(block) == BlockType.PARAGRAPH:
+        text_nodes = text_to_textnodes(block)
+        html_nodes = []
+        for node in text_nodes:
+            html_nodes.append(text_node_to_html_node(node))
+        return html_nodes
+
+    elif block_to_block_type(block) == BlockType.QUOTE:
         block_values = []
         for inline in block.split("\n"):
             if inline != "":
