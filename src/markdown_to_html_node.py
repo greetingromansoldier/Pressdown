@@ -37,6 +37,9 @@ def markdown_to_html_node(markdown):
             print("*"*50)
         if block_to_block_type(block) == BlockType.QUOTE:
             print(f"'{block}'\nis quote")
+            print(f"quote blockk transformed to html:\n"
+                  +f"{markdown_quote_block_to_html_node(block)}"
+                  )
             print("*"*50)
         if block_to_block_type(block) == BlockType.UNORDERED_LIST:
             print(f"'{block}'\nis unordered list")
@@ -53,6 +56,8 @@ def markdown_to_html_node(markdown):
     return blocks
     
 def markdown_paragraph_to_html_node(block):
+    # some of logic in this func should be refactored and
+    # transfered to md block to child func
     print("="*50)
     print(f"func md paragraph to html node, block:\n{block}")
     text_nodes = text_to_textnodes(block)
@@ -89,6 +94,11 @@ def markdown_heading_to_html_node(block):
     node = LeafNode(tag=f'h{heading_value}', value=block_value, props=None)
     return node.to_html()
 
+def markdown_quote_block_to_html_node(block):
+    children = block_to_children(block)
+    quote_block_parent = ParentNode(tag="blockquote", children=children)
+    return quote_block_parent.to_html()
+
 def markdown_unordered_list_to_html_node(block):
     children = block_to_children(block)
     unordered_list_parent = ParentNode(tag="ul", children=children)
@@ -100,7 +110,21 @@ def markdown_ordered_list_to_html_node(block):
     return unordered_list_parent.to_html()
 
 def block_to_children(block):
-    if block_to_block_type(block) == BlockType.UNORDERED_LIST:
+    if block_to_block_type(block) == BlockType.QUOTE:
+        block_values = []
+        for inline in block.split("\n"):
+            if inline != "":
+                if inline.startswith("> "):
+                    block_values.append(inline[2:].strip("\n"))
+                elif inline.startswith(">"):
+                    block_values.append(inline[1:].strip("\n"))
+        final_string = " ".join(block_values)
+        text_nodes = text_to_textnodes(final_string)
+        html_nodes = []
+        for node in text_nodes:
+            html_nodes.append(text_node_to_html_node(node))
+        return html_nodes
+    elif block_to_block_type(block) == BlockType.UNORDERED_LIST:
         block_values = []
         list_elem_nodes = []
         for inline in block.split("- "):
@@ -143,8 +167,8 @@ That's a good thing to add **bold text** also, and of course some [image](http:/
 
 ####### Heading ???
 
->THis is block with *italic* text
->And just another text in one block
+>THis is quote block with *italic* text
+>And just another quote text in one block
 
 And here's the much much better block
 with **bolded** text
@@ -159,6 +183,11 @@ with **bolded** text
 3. some
 4. ordered list
 5. with **some bold** and **some italic** text
+
+> this
+> is
+> block
+> quote
 """
 
 markdown_to_html_node(md)
