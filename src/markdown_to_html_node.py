@@ -4,7 +4,6 @@ from textnode import (
     TextNode,
 )
 from htmlnode import (
-    HTMLNode,
     LeafNode,
     ParentNode
 )
@@ -73,7 +72,8 @@ def markdown_ordered_list_to_html_node(block):
 
 def block_to_children(block):
     if block_to_block_type(block) == BlockType.PARAGRAPH:
-        text_nodes = text_to_textnodes(block)
+        joined_block = " ".join(block.split("\n"))
+        text_nodes = text_to_textnodes(joined_block)
         html_nodes = []
         for node in text_nodes:
             html_nodes.append(text_node_to_html_node(node))
@@ -148,48 +148,5 @@ def block_to_children(block):
         return list_elem_nodes
 
 
-
-
-# will be transfered to tests
-md = """
-Hello my little friend. I want some _italic_ text here. This would be awesome. 
-That's a good thing to add **bold text** also, and of course some [image](http://link to an image)
-
-# Heading
-
-## Heading 2
-
-####### Heading ???
-
->THis is quote block with _italic_ text
->And just another quote text in one block
-
-And here's the much much better block
-with **bolded** text
-
-- unordered list 1
-- unordered list 2
-- unordered list 3
-- unordered list with _italic text_ 4
-
-1. and this
-2. is
-3. some
-4. ordered list
-5. with **some bold** and **some italic** text
-
-> this
-> is
-> block
-> quote
-
-```
-and finally we are **doing** codeblock
-and some other stuff
-```
-"""
-
-html_page = markdown_to_html_node(md)
-print(html_page)
 
 
