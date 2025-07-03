@@ -35,7 +35,7 @@ def markdown_to_html_node(markdown):
             nodes.append(markdown_ordered_list_to_html_node(block))
 
     div_node = ParentNode(tag="div", children=nodes)
-    return div_node.to_html()
+    return div_node
     
 def markdown_paragraph_to_html_node(block):
     children = block_to_children(block)
