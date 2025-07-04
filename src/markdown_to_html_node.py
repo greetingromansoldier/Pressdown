@@ -49,7 +49,7 @@ def markdown_code_block_to_html_node(block):
     text_value = ""
     for value in block.split("```"):
         if value != "":
-            text_value += value.strip("\n")
+            text_value += value.lstrip("\n")
     text_node = TextNode(text=text_value, text_type=TextType.CODE)
     internal_html = text_node_to_html_node(text_node)
     parent_node = ParentNode(tag="pre", children=[internal_html])
