@@ -1,3 +1,4 @@
+import re
 from text_node_to_html_node import text_node_to_html_node
 from textnode import (
     TextType,
@@ -80,28 +81,14 @@ def block_to_children(block):
         return html_nodes
 
     elif block_to_block_type(block) == BlockType.HEADING:
-        heading_value = 0
-        block_value = ""
-        if block.startswith("# "):
-            heading_value = 1
-            block_value = block.strip().split("#")[1].strip()
-        elif block.startswith("## "):
-            heading_value = 2
-            block_value = block.strip().split("##")[1].strip()
-        elif block.startswith("### "):
-            heading_value = 3
-            block_value = block.strip().split("###")[1].strip()
-        elif block.startswith("#### "):
-            heading_value = 4
-            block_value = block.strip().split("####")[1].strip()
-        elif block.startswith("##### "):
-            heading_value = 5
-            block_value = block.strip().split("#####")[1].strip()
-        elif block.startswith("###### "):
-            heading_value = 6
-            block_value = block.strip().split("######")[1].strip()
-        heading_node = LeafNode(tag=f'h{heading_value}', value=block_value, props=None)
-        return heading_node
+        match = re.match(r"^(#{1,6}) (.*)", block)
+        html_nodes = []
+        if match:
+            heading_level = len(match.group(1))
+            heading_text = match.group(2)
+            heading_node = LeafNode(tag=f'h{heading_level}', value=heading_text, props=None)
+            html_nodes.append(heading_node)
+        return html_nodes
 
 
     elif block_to_block_type(block) == BlockType.QUOTE:

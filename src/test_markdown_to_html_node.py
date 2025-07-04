@@ -19,9 +19,6 @@ This is another paragraph with _italic_ text and `code` here
 
         node = markdown_to_html_node(md)
         html = node.to_html()
-        print("*"*50)
-        print(f"html 2:\n{html}")
-        print("*"*50)
         self.assertEqual(
             html,
             "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
@@ -37,12 +34,35 @@ the **same** even with inline stuff
 
         node = markdown_to_html_node(md)
         html = node.to_html()
-        print("*"*50)
-        print(f"html 2:\n{html}")
-        print("*"*50)
         self.assertEqual(
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+        )
+
+    def test_headings(self):
+        md = """
+# This is correct heading
+## Also correct heading
+### Also correct heading
+#### Also correct heading
+##### Also correct heading
+###### Also correct heading
+
+####### And there's no h7 heading to this is paragraph
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div>"
+            +"<h1>This is correct heading</h1>"
+            +"<h2>Also correct heading</h2>"
+            +"<h3>Also correct heading</h3>"
+            +"<h4>Also correct heading</h4>"
+            +"<h5>Also correct heading</h5>"
+            +"<h6>Also correct heading</h6>"
+            +"<p>####### And there's no h7 heading to this is paragraph</p>"
+            +"<div>"
         )
 
 # will be transfered to tests
