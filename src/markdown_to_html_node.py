@@ -43,8 +43,8 @@ def markdown_paragraph_to_html_node(block):
     return parent
 
 def markdown_heading_to_html_node(block):
-    children = block_to_children(block)
-    return children
+    node = block_to_children(block)
+    return node
 
 def markdown_code_block_to_html_node(block):
     text_value = ""
@@ -87,8 +87,7 @@ def block_to_children(block):
             heading_level = len(match.group(1))
             heading_text = match.group(2)
             heading_node = LeafNode(tag=f'h{heading_level}', value=heading_text, props=None)
-            html_nodes.append(heading_node)
-        return html_nodes
+            return heading_node
 
 
     elif block_to_block_type(block) == BlockType.QUOTE:
@@ -106,6 +105,8 @@ def block_to_children(block):
             html_nodes.append(text_node_to_html_node(node))
         return html_nodes
     elif block_to_block_type(block) == BlockType.UNORDERED_LIST:
+        # so currently code doesn't handle elems in unorderes lists which
+        # start with '* '
         block_values = []
         list_elem_nodes = []
         for inline in block.split("- "):

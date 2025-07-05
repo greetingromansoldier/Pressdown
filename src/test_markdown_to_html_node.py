@@ -62,49 +62,63 @@ the **same** even with inline stuff
             +"<h5>Also correct heading</h5>"
             +"<h6>Also correct heading</h6>"
             +"<p>####### And there's no h7 heading to this is paragraph</p>"
-            +"<div>"
+            +"</div>"
         )
 
-# will be transfered to tests
-# md = """
-# Hello my little friend. I want some _italic_ text here. This would be awesome. 
-# That's a good thing to add **bold text** also, and of course some [image](http://link to an image)
-#
-# # Heading
-#
-# ## Heading 2
-#
-# ####### Heading ???
-#
-# >THis is quote block with _italic_ text
-# >And just another quote text in one block
-#
-# And here's the much much better block
-# with **bolded** text
-#
-# - unordered list 1
-# - unordered list 2
-# - unordered list 3
-# - unordered list with _italic text_ 4
-#
-# 1. and this
-# 2. is
-# 3. some
-# 4. ordered list
-# 5. with **some bold** and **some italic** text
-#
-# > this
-# > is
-# > block
-# > quote
-#
-# ```
-# and finally we are **doing** codeblock
-# and some other stuff
-# ```
-# """
 
-# html_page = markdown_to_html_node(md)
-# print(html_page)
+    def test_unordered_lists(self):
+        md = """
+- This
+- is 
+- unordered
+- list
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        print(f"unordered lists in html:\n{html}")
+        self.assertEqual(
+            html,
+            "<div><ul><li>This</li><li>is</li><li>unordered</li><li>list</li></ul></div>"       
+            )
+
+
+    def test_ordered_lists(self):
+        # doesn't support situation when every line starts with one number
+        # in other words - they are calculated so every other elem should be n+1
+        md = """
+1. This
+2. is 
+3. unordered
+4. list
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        print(f"unordered lists in html:\n{html}")
+        self.assertEqual(
+            html,
+            "<div><ol><li>This</li><li>is</li><li>unordered</li><li>list</li></ol></div>"       
+            )
+
+    def test_block_quotes(self):
+        # doesn't support situation when every line starts with one number
+        # in other words - they are calculated so every other elem should be n+1
+        md = """
+> This
+> is 
+> block
+>of
+>quote
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        print(f"unordered lists in html:\n{html}")
+        self.assertEqual(
+            html,
+            "<div><blockquote>This is block of quote</blockquote></div>"
+            )
+
 
 

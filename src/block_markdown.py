@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 
 class BlockType(Enum):
@@ -9,15 +10,22 @@ class BlockType(Enum):
     ORDERED_LIST = "ordered_list"
 
 def markdown_to_blocks(markdown):
-    blocks = markdown.split("\n\n")
-    new_blocks = []
-    for block in blocks:
-        new_block = block.strip()
-        if len(block) < 1:
+    lines = [line.rstrip() for line in markdown.splitlines()]
+    blocks = []
+    block = []
+    for line in lines:
+        if line.strip() == "":
+            if block:
+                blocks.append("\n".join(block).strip())
+                block = []
             continue
-        new_blocks.append(new_block)
-    return new_blocks
-
+        if re.match(r"^#{1,6} ", line) and block:
+            blocks.append("\n".join(block).strip())
+            block = []
+        block.append(line)
+    if block:
+        blocks.append("\n".join(block).strip())
+    return [b for b in blocks if b]
 def block_to_block_type(block):
 
     if block[0] == "#":
