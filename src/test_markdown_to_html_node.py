@@ -76,7 +76,6 @@ the **same** even with inline stuff
 
         node = markdown_to_html_node(md)
         html = node.to_html()
-        print(f"unordered lists in html:\n{html}")
         self.assertEqual(
             html,
             "<div><ul><li>This</li><li>is</li><li>unordered</li><li>list</li></ul></div>"       
@@ -95,7 +94,6 @@ the **same** even with inline stuff
 
         node = markdown_to_html_node(md)
         html = node.to_html()
-        print(f"unordered lists in html:\n{html}")
         self.assertEqual(
             html,
             "<div><ol><li>This</li><li>is</li><li>unordered</li><li>list</li></ol></div>"       
@@ -114,7 +112,6 @@ the **same** even with inline stuff
 
         node = markdown_to_html_node(md)
         html = node.to_html()
-        print(f"unordered lists in html:\n{html}")
         self.assertEqual(
             html,
             "<div><blockquote>This is block of quote</blockquote></div>"
