@@ -13,6 +13,7 @@ def copy_static():
         os.mkdir(public_path)
     else: 
         os.mkdir(public_path)
+
     def copy_recursive(path: str, dst: str):
         new_path, new_dst = "", ""
         for elem in os.listdir(path=path):
