@@ -100,8 +100,6 @@ the **same** even with inline stuff
             )
 
     def test_block_quotes(self):
-        # doesn't support situation when every line starts with one number
-        # in other words - they are calculated so every other elem should be n+1
         md = """
 > This
 > is 
