@@ -14,7 +14,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str, basepath: 
     full_html = full_html.replace('href="/', f'href="{basepath}')
     full_html = full_html.replace('src="/', f'src="{basepath}')
 
-    dest_file = open(f"{dest_path}/index.html", "w")
+    dest_file = open(dest_path, "w")
     dest_file.write(full_html)
 
 def generate_pages_recursive(dir_path_content: str,
@@ -25,9 +25,10 @@ def generate_pages_recursive(dir_path_content: str,
     current_path, current_dst = "", ""
     for elem in os.listdir(dir_path_content):
         if os.path.isfile(f"{dir_path_content}/{elem}"):
+            html_filename = elem.replace('.md', '.html')
             generate_page(from_path=f"{dir_path_content}/{elem}",
                           template_path=template_path,
-                          dest_path=f"{dest_dir_path}",
+                          dest_path=f"{dest_dir_path}/{html_filename}",
                           basepath=basepath
                           )
         else:
