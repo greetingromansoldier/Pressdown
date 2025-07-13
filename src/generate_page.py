@@ -11,10 +11,10 @@ def generate_page(from_path: str, template_path: str, dest_path: str, basepath: 
     html_source = markdown_to_html_node(markdown_source).to_html()
     title = extract_title(markdown_source)
     full_html = template_text.replace("{{ Title }}", title).replace("{{ Content }}", html_source)
-    full_html = full_html.replace('href="/', 'href="{basepath}')
-    full_html = full_html.replace('src="/', 'src="{basepath}')
+    full_html = full_html.replace('href="/', f'href="{basepath}')
+    full_html = full_html.replace('src="/', f'src="{basepath}')
 
-    dest_file = open(f"index.html", "w")
+    dest_file = open(f"{dest_path}/index.html", "w")
     dest_file.write(full_html)
 
 def generate_pages_recursive(dir_path_content: str,
