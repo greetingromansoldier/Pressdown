@@ -14,7 +14,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str, basepath: 
     full_html = full_html.replace('href="/', 'href="{basepath}')
     full_html = full_html.replace('src="/', 'src="{basepath}')
 
-    dest_file = open(f"{dest_path}/index.html", "w")
+    dest_file = open(f"index.html", "w")
     dest_file.write(full_html)
 
 def generate_pages_recursive(dir_path_content: str,
