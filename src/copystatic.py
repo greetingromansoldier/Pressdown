@@ -1,18 +1,13 @@
 import os
 import shutil
 
-def copy_static():
-    file_abs_path = os.path.abspath(__file__)
-    project_dir_name = os.path.dirname(os.path.dirname(file_abs_path))
+def copy_static(path: str, dst: str):
 
-    public_path = f"{project_dir_name}/public"
-    static_path = f"{project_dir_name}/static"
-
-    if os.path.exists(public_path):
-        shutil.rmtree(path=public_path) 
-        os.mkdir(public_path)
+    if os.path.exists(dst):
+        shutil.rmtree(path=dst) 
+        os.mkdir(dst)
     else: 
-        os.mkdir(public_path)
+        os.mkdir(dst)
 
     def copy_recursive(path: str, dst: str):
         new_path, new_dst = "", ""
@@ -24,4 +19,4 @@ def copy_static():
                 new_path, new_dst = copy_recursive(f"{path}/{elem}", f"{dst}/{elem}")
         return new_path, new_dst
 
-    copy_recursive(path=static_path, dst=public_path)
+    copy_recursive(path=path, dst=dst)
