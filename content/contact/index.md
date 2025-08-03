@@ -2,7 +2,7 @@
 
 [< Back Home](/)
 
-Send me an email anytime to chat about anything!
+Feel free to send email anytime and let's chat about anything!
 
 `greetingromansoldier@proton.me`
 
