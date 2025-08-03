@@ -41,7 +41,7 @@ Consider some posts about Talkien's _"The Lord of the Rings"_:
 - [Why Tom Bombadil Was a Mistake](/blog/tom)
 - [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
 
-### Thank you for your attention!
+### Thanks for stopping by!
 
 Want to get in touch? [Contact me here](/contact).
 
