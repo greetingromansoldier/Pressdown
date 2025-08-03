@@ -45,4 +45,4 @@ Consider some posts about Talkien's _"The Lord of the Rings"_:
 
 Want to get in touch? [Contact me here](/contact).
 
-_This rant was generated with a custom-built static site generator -- [Pressdown](https://github.com/greetingromansoldier/Pressdown)_
+_This rant was generated with a custom-built static site generator_ -- [Pressdown](https://github.com/greetingromansoldier/Pressdown)
