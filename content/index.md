@@ -27,8 +27,8 @@ but you'll still be fighting the system.
 
 Here's how _normal_ people update their `software` on a _normal_ system:
 
+Update all my software? Okay.
 ```
-# Update all my software? Okay.
 sudo apt update && sudo apt upgrade -y
 ```
 
