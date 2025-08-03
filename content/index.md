@@ -43,4 +43,4 @@ func main(){
 
 Want to get in touch? [Contact me here](/contact).
 
-This site was generated with a custom-built static site generator [github link](https://github.com/greetingromansoldier/static-site-generator)
+This site was generated with a custom-built static site generator [github link](https://github.com/greetingromansoldier/Pressdown)
