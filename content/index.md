@@ -1,6 +1,6 @@
-# Tolkien Fan Club
+# Windows is BAD
 
-![JRR Tolkien sitting](/images/tolkien.png)
+![JRR Tolkien sitting](/images/evil-windows.jpg)
 
 Here's the deal, I'm done with Windows. For years, I told myself it was "good enough," but I've come to realize that using it is like trying to run a marathon with a pebble in my shoe.
 
