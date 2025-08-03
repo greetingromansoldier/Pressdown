@@ -28,6 +28,7 @@ but you'll still be fighting the system.
 Here's how _normal_ people update their `software` on a _normal_ system:
 
 Update all my software? Okay.
+
 ```
 sudo apt update && sudo apt upgrade -y
 ```
@@ -44,4 +45,4 @@ Consider some posts about Talkien's _"The Lord of the Rings"_:
 
 Want to get in touch? [Contact me here](/contact).
 
-_This rant was generated with a custom-built static site generator_ [Pressdown](https://github.com/greetingromansoldier/Pressdown)
+_This rant was generated with a custom-built static site generator -- [Pressdown](https://github.com/greetingromansoldier/Pressdown)_
