@@ -1,6 +1,4 @@
-import os
 import sys
-from textnode import TextNode
 from copystatic import copy_static
 from generate_page import generate_page, generate_pages_recursive
 
