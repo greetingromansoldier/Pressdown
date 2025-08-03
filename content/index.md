@@ -32,13 +32,15 @@ Update all my software? Okay.
 sudo apt update && sudo apt upgrade -y
 ```
 
-## Well I guess Windows doesn't deserve even more TALKING about it. 
+### Well I guess Windows doesn't deserve even more ATTENTION 
 
 Consider some posts about Talkien's _"The Lord of the Rings"_:
 
 - [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
 - [Why Tom Bombadil Was a Mistake](/blog/tom)
 - [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
+
+### Thank you for your attention!
 
 Want to get in touch? [Contact me here](/contact).
 
