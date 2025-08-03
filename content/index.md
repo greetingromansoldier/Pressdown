@@ -7,12 +7,6 @@ Here's the deal, I'm done with Windows. For years, I told myself it was "good en
 > _"The 'blue screen of death' is just the computer's way of telling you it's time to go outside."_ 
 > -- A wise sysadmin, probably
 
-## Blog posts
-
-- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
-- [Why Tom Bombadil Was a Mistake](/blog/tom)
-- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
-
 ## Rational Reasons I hate it now
 
 You can spend years learning all the workarounds and registry hacks,
@@ -37,6 +31,14 @@ Here's how _normal_ people update their `software` on a _normal_ system:
 # Update all my software? Okay.
 sudo apt update && sudo apt upgrade -y
 ```
+
+## Well I guess Windows doesn't deserve even more TALKING about it. 
+
+Consider some posts about Talkien's _"The Lord of the Rings"_:
+
+- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
+- [Why Tom Bombadil Was a Mistake](/blog/tom)
+- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
 
 Want to get in touch? [Contact me here](/contact).
 

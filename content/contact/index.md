@@ -2,8 +2,8 @@
 
 [< Back Home](/)
 
-Give me a call anytime to chat about Tolkien!
+Send me an email anytime to chat about anything!
 
-`555-555-5555`
+`greetingromansoldier@proton.me`
 
-**"Váya márië."**
+Cheer!:)
